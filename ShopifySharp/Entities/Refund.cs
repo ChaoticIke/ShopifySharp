@@ -61,7 +61,7 @@ namespace ShopifySharp
         /// The list of <see cref="Transaction"/> objects
         /// </summary>
         [JsonProperty("transactions")]
-        public IEnumerable<Transaction> Transactions { get; set; }
+        public IEnumerable<RefundTransaction> Transactions { get; set; }
 
         /// <summary>
         /// The unique identifier of the user who performed the refund.
@@ -83,5 +83,20 @@ namespace ShopifySharp
         /// </summary>
         [JsonProperty("amount")]
         public decimal? Amount { get; set; }
+
+        /// <summary>
+        /// The maximum amount that can be refunded
+        /// </summary>
+        [JsonProperty("maximum_refundable")]
+        public decimal? MaximumRefundable { get; set; }
+    }
+
+    public class RefundTransaction : Transaction
+    {
+        /// <summary>
+        /// The maximum amount that can be refunded
+        /// </summary>
+        [JsonProperty("maximum_refundable")]
+        public decimal? MaximumRefundable { get; set; }
     }
 }

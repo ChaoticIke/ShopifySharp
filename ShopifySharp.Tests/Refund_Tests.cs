@@ -34,7 +34,7 @@ namespace ShopifySharp.Tests
             var order = await Fixture.OrderService.GetAsync(Fixture.Created.First().Id.Value);
             var requestedRefund = Prepare_Calculate(order);
             var calculateResponse = await Fixture.Service.CalculateAsync(order.Id.Value, requestedRefund);
-            Assert.True(calculateResponse.Transactions.Count<Transaction>() > 0, "No transactions for order!"); //Perhaps something is unexpected with the order, or call/response was malformed."
+            Assert.True(calculateResponse.Transactions.Count<RefundTransaction>() > 0, "No transactions for order!"); //Perhaps something is unexpected with the order, or call/response was malformed."
 
             //RefundAsync
             var fullRefundForAnOrder = Prepare_Refund(calculateResponse);
@@ -94,7 +94,7 @@ namespace ShopifySharp.Tests
                     FullRefund = true,
                 },
                 RefundLineItems = new List<ShopifySharp.RefundLineItem>(),
-                Transactions = new List<ShopifySharp.Transaction>(),
+                Transactions = new List<ShopifySharp.RefundTransaction>(),
             };
             var liList = new List<RefundLineItem>();
             foreach (var orderLi in calculateRefundResponse.RefundLineItems)
@@ -108,10 +108,10 @@ namespace ShopifySharp.Tests
                 liList.Add(lineItem);
             };
             fullRefundForAnOrder.RefundLineItems = liList;
-            var transactionList = new List<Transaction>();
+            var transactionList = new List<RefundTransaction>();
             foreach (var shopifyTransaction in calculateRefundResponse.Transactions)
             {
-                var transactionLi = new ShopifySharp.Transaction()
+                var transactionLi = new ShopifySharp.RefundTransaction()
                 {
                     ParentId = shopifyTransaction.ParentId,
                     Amount = shopifyTransaction.Amount,
